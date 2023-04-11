@@ -5,56 +5,45 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TaskService = void 0;
 const common_1 = require("@nestjs/common");
+const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
 let TaskService = class TaskService {
-    constructor() {
-        this.tasks = [
-            { id: 1, description: "Task 1", completed: false },
-            { id: 2, description: "Task 2", completed: false },
-            { id: 3, description: "Task 3", completed: false },
-            { id: 4, description: "Task 4", completed: false },
-            { id: 5, description: "Task 5", completed: false },
-            { id: 6, description: "Task 6", completed: false },
-            { id: 7, description: "Task 7", completed: false },
-            { id: 8, description: "Task 8", completed: false },
-            { id: 9, description: "Task 9", completed: false },
-            { id: 10, description: "Task 10", completed: false },
-        ];
+    constructor(taskModel) {
+        this.taskModel = taskModel;
     }
-    getAll() {
-        return this.tasks;
+    async getAll() {
+        return await this.taskModel.find().exec();
     }
-    getById(id) {
-        const task = this.tasks.find((value) => value.id == id);
-        return task;
+    async getById(id) {
+        return await this.taskModel.findById(id).exec();
     }
-    create(task) {
-        let lastId = 0;
-        if (this.tasks.length > 0) {
-            lastId = this.tasks[this.tasks.length - 1].id;
-        }
-        task.id = lastId + 1;
-        this.tasks.push(task);
-        return task;
+    async create(task) {
+        const createdTask = new this.taskModel(task);
+        return await createdTask.save();
     }
-    update(task) {
-        const taskObj = this.getById(task.id);
-        if (taskObj) {
-            taskObj.description = task.description;
-            taskObj.completed = task.completed;
-        }
-        return taskObj;
+    async update(id, task) {
+        await this.taskModel.updateOne({ _id: id }, task).exec();
+        return this.getById(id);
     }
-    delete(id) {
-        const indexObj = this.tasks.findIndex((value) => value.id = id);
-        this.tasks.splice(indexObj, 1);
-        return "Deletado Com Sucesso";
+    async delete(id) {
+        console.log(id[0]);
+        console.log((0, mongoose_2.isValidObjectId)(id));
+        return await this.taskModel.deleteOne({ _id: id }).exec();
     }
 };
 TaskService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __param(0, (0, mongoose_1.InjectModel)('Task')),
+    __metadata("design:paramtypes", [mongoose_2.Model])
 ], TaskService);
 exports.TaskService = TaskService;
 //# sourceMappingURL=task.service.js.map

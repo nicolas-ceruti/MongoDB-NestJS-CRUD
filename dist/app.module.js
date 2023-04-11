@@ -10,15 +10,18 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const tasks_controller_1 = require("./tasks/tasks.controller");
-const task_service_1 = require("./tasks/shared/task.service");
+const mongoose_1 = require("@nestjs/mongoose");
+const tasks_module_1 = require("./tasks/tasks.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
-        controllers: [app_controller_1.AppController, tasks_controller_1.TasksController],
-        providers: [app_service_1.AppService, task_service_1.TaskService],
+        imports: [
+            mongoose_1.MongooseModule.forRoot('mongodb+srv://payever_user:PYm9HqFYlOgMXh7P@payever.hxho7pf.mongodb.net/?retryWrites=true&w=majority'),
+            tasks_module_1.TasksModule
+        ],
+        controllers: [app_controller_1.AppController],
+        providers: [app_service_1.AppService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

@@ -31,8 +31,7 @@ let TasksController = class TasksController {
         return this.taskService.create(task);
     }
     async update(id, task) {
-        task.id = id;
-        return this.taskService.update(task);
+        return this.taskService.update(id, task);
     }
     async delete(id) {
         return this.taskService.delete(id);
@@ -48,7 +47,7 @@ __decorate([
     (0, common_2.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "getById", null);
 __decorate([
@@ -60,17 +59,17 @@ __decorate([
 ], TasksController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    __param(0, (0, common_1.Param)()),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, task_1.Task]),
+    __metadata("design:paramtypes", [String, task_1.Task]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)()),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "delete", null);
 TasksController = __decorate([

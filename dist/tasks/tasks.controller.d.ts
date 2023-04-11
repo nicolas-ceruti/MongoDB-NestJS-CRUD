@@ -4,8 +4,8 @@ export declare class TasksController {
     private taskService;
     constructor(taskService: TaskService);
     getAll(): Promise<Task[]>;
-    getById(id: number): Promise<Task>;
+    getById(id: string): Promise<Task>;
     create(task: Task): Promise<Task>;
-    update(id: number, task: Task): Promise<Task>;
-    delete(id: number): Promise<String>;
+    update(id: string, task: Task): Promise<Task>;
+    delete(id: string): Promise<import("mongodb").DeleteResult>;
 }
