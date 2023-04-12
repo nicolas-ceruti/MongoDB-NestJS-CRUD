@@ -35,5 +35,6 @@ export declare class UserService {
         _id: import("mongoose").Types.ObjectId;
     }, never>>;
     getById(id: number): Promise<UserDto>;
-    getAvatar(id: number): Promise<import("mongodb").UpdateResult>;
+    getAvatar(id: number): Promise<string>;
+    deleteAvatar(id: number): Promise<string>;
 }

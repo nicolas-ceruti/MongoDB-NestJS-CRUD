@@ -21,13 +21,16 @@ let UsersController = class UsersController {
         this.userService = userService;
     }
     async getUser(id) {
-        return this.userService.getById(id);
+        return await this.userService.getById(id);
+    }
+    async getAvatar(id) {
+        return await this.userService.getAvatar(id);
     }
     async createUser(userDTO) {
         return this.userService.create(userDTO);
     }
-    async getAvatar(id) {
-        return await this.userService.getAvatar(id);
+    async deleteAvatar(id) {
+        return this.userService.deleteAvatar(id);
     }
 };
 __decorate([
@@ -38,6 +41,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUser", null);
 __decorate([
+    (0, common_1.Get)('user/:id/avatar'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getAvatar", null);
+__decorate([
     (0, common_1.Post)('/users'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -45,12 +55,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "createUser", null);
 __decorate([
-    (0, common_1.Get)('user/:id/avatar'),
+    (0, common_1.Delete)('user/:id/avatar'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "getAvatar", null);
+], UsersController.prototype, "deleteAvatar", null);
 UsersController = __decorate([
     (0, common_1.Controller)('api'),
     __metadata("design:paramtypes", [user_service_1.UserService])

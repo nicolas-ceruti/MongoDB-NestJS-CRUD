@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Res, UseFilters } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user-dto/user-dto';
-import { Response } from 'express'; 
+import { Response } from 'express';
 
 @Controller('api')
 export class UsersController {
@@ -10,7 +10,14 @@ export class UsersController {
 
     @Get('user/:id')
     public async getUser(@Param('id') id: number): Promise<any> {
-        return this.userService.getById(id);
+        return await this.userService.getById(id);
+    }
+
+    
+    @Get('user/:id/avatar')
+    public async getAvatar(@Param('id') id: number): Promise<any> {
+        return await this.userService.getAvatar(id);
+
     }
 
     @Post('/users')
@@ -18,17 +25,11 @@ export class UsersController {
         return this.userService.create(userDTO);
     }
 
-    // @Delete('user/:id/avatar')
-    // public async deleteAvatar(@Param('id') id: number): Promise<any> {
-    //     this.userService.deleteAvatar(id);
-    //     return { message: 'User Avatar successfully deleted!' };
-    // }
+    @Delete('user/:id/avatar')
+    public async deleteAvatar(@Param('id') id: number): Promise<any> {
+        return this.userService.deleteAvatar(id);
+    }
 
 
-    @Get('user/:id/avatar')
-    public async getAvatar(@Param('id') id: number): Promise<any> {
-        return await this.userService.getAvatar(id);
-       
-      }
 
 }

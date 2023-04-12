@@ -43,26 +43,43 @@ let UserService = class UserService {
         return await createdUser.save();
     }
     async getById(id) {
-        const require = this.httpService.get(`https://reqres.in/api/users/${id}`);
-        const response = await (0, rxjs_1.lastValueFrom)(require);
-        return response.data.data;
+        try {
+            const require = this.httpService.get(`https://reqres.in/api/users/${id}`);
+            const response = await (0, rxjs_1.lastValueFrom)(require);
+            return response.data.data;
+        }
+        catch (error) {
+            throw new common_1.NotFoundException(`The user with id ${id} does not exist!`);
+        }
     }
     async getAvatar(id) {
         const user = await this.userModel.findOne({ _id: id });
         const avatar = user.avatar;
         if (avatar.startsWith('http')) {
             const response = await axios_2.default.get(avatar, { responseType: 'arraybuffer' });
-            const hash = crypto.createHash('sha256').update(response.data).digest('hex');
+            const hash = (crypto.createHash('sha256').update(response.data).digest('hex'));
             const fileName = `${hash}.jpg`;
-            const filePath = path.join(`${process.cwd()}/src/users/avatar-img`, fileName);
+            const filePath = path.join(`${process.cwd()}/src/users/avatar-img/${fileName}`);
             fs.writeFileSync(filePath, Buffer.from(response.data), 'binary');
-            user.avatar = hash;
+            user.avatar = fileName;
             const updated = await this.userModel.updateOne({ _id: id }, user).exec();
-            return updated;
+            return `The image was successfully saved!`;
         }
-        else {
-            throw new common_1.BadRequestException(`A imagem já foi salva no Sistema!`);
+        else if (!user.avatar) {
+            throw new common_1.BadRequestException(`The user does not have avatar!`);
         }
+        throw new common_1.BadRequestException(`The image has already been saved in the system!`);
+    }
+    async deleteAvatar(id) {
+        const user = await this.userModel.findOne({ _id: id });
+        if (!user.avatar) {
+            throw new common_1.NotFoundException(`The user with id ${id} does not have avatar!`);
+        }
+        const filePath = path.resolve(`${process.cwd()}/src/users/avatar-img`, user.avatar);
+        await fs.promises.unlink(filePath);
+        user.avatar = "";
+        const updated = await this.userModel.updateOne({ _id: id }, user).exec();
+        return `The image was successfully deleted!`;
     }
 };
 UserService = __decorate([
