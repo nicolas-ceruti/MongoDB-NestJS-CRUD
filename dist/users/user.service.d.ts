@@ -22,22 +22,18 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Task } from './task';
 import { Model } from 'mongoose';
-export declare class TaskService {
-    private readonly taskModel;
-    constructor(taskModel: Model<Task>);
-    getAll(): Promise<(import("mongoose").Document<unknown, {}, Task> & Omit<Task & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>)[]>;
-    getById(id: string): Promise<import("mongoose").Document<unknown, {}, Task> & Omit<Task & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>>;
-    create(task: Task): Promise<import("mongoose").Document<unknown, {}, Task> & Omit<Task & {
-        _id: import("mongoose").Types.ObjectId;
-    }, never>>;
-    update(id: string, task: Task): Promise<import("mongoose").Document<unknown, {}, Task> & Omit<Task & {
+import { UserDto } from './user-dto/user-dto';
+import { MailerService } from '@nestjs-modules/mailer/dist';
+import { HttpService } from '@nestjs/axios';
+export declare class UserService {
+    private readonly userModel;
+    private readonly mailerService;
+    private httpService;
+    constructor(userModel: Model<UserDto>, mailerService: MailerService, httpService: HttpService);
+    create(user: UserDto): Promise<import("mongoose").Document<unknown, {}, UserDto> & Omit<UserDto & {
         _id: import("mongoose").Types.ObjectId;
     }, never>>;
-    delete(id: string): Promise<import("mongodb").DeleteResult>;
+    getById(id: number): Promise<UserDto>;
+    getAvatar(id: number): Promise<import("mongodb").UpdateResult>;
 }

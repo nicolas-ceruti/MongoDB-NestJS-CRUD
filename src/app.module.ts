@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TasksController } from './tasks/tasks.controller';
-import { TaskService } from './tasks/shared/task.service';
-
 import { MongooseModule } from '@nestjs/mongoose';
-import { TasksModule } from './tasks/tasks.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://payever_user:PYm9HqFYlOgMXh7P@payever.hxho7pf.mongodb.net/?retryWrites=true&w=majority'),
-    TasksModule
+    MongooseModule.forRoot('mongodb+srv://payever_group:i7xBU3wQm3IRJ27H@cluster0.t3o4z1n.mongodb.net/?retryWrites=true&w=majority'),
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
