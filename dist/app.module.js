@@ -7,17 +7,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+require('dotenv/config');
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const users_module_1 = require("./users/users.module");
+4;
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forRoot('mongodb+srv://payever_group:i7xBU3wQm3IRJ27H@cluster0.t3o4z1n.mongodb.net/?retryWrites=true&w=majority'),
+            mongoose_1.MongooseModule.forRoot(`${process.env.MONGODB_ATLAS_URI}`),
             users_module_1.UsersModule
         ],
         controllers: [app_controller_1.AppController],

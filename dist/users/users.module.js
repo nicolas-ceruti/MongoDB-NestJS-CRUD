@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersModule = void 0;
+require('dotenv/config');
 const common_1 = require("@nestjs/common");
 const users_controller_1 = require("./users.controller");
 const user_service_1 = require("./user.service");
@@ -14,6 +15,8 @@ const user_schema_1 = require("./schema/user.schema");
 const mongoose_1 = require("@nestjs/mongoose");
 const mailer_1 = require("@nestjs-modules/mailer");
 const axios_1 = require("@nestjs/axios");
+const user = process.env.MAILER_USER;
+const pass = process.env.MAILER_PASSWORD;
 let UsersModule = class UsersModule {
 };
 UsersModule = __decorate([
@@ -24,8 +27,8 @@ UsersModule = __decorate([
                 transport: {
                     host: 'smtp.gmail.com',
                     auth: {
-                        user: 'mss.rajnikant1993@gmail.com',
-                        pass: 'jqpbajqwzpnardvw',
+                        user: user,
+                        pass: pass,
                     }
                 }
             }),

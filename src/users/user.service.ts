@@ -41,6 +41,7 @@ export class UserService {
             to: user.email,
             subject: 'Congratulations! You are part of the payever team!',
             context: { name: user.last_name },
+            
         });
 
         return await createdUser.save();

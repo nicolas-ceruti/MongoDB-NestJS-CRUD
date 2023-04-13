@@ -1,12 +1,15 @@
+require('dotenv/config');
 import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
-import { UserDto } from './user-dto/user-dto';
 import { UserService } from './user.service';
 import { UserSchema } from './schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HttpModule } from '@nestjs/axios';
+// import { RabbitService } from '../rabbit/rabbitmq.service';
 
+const user =process.env.MAILER_USER
+const pass = process.env.MAILER_PASSWORD
 
 @Module({
   imports: [
@@ -15,8 +18,8 @@ import { HttpModule } from '@nestjs/axios';
       transport:{
         host: 'smtp.gmail.com',
         auth: {
-          user: 'mss.rajnikant1993@gmail.com',
-          pass: 'jqpbajqwzpnardvw',
+          user: user,
+          pass: pass,
         }
       }
     }),
