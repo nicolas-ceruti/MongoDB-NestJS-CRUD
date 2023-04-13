@@ -1,5 +1,4 @@
-import { Document } from 'mongoose';
-export declare class UserDto extends Document {
+export declare class UserDto {
     email: string;
     first_name: string;
     last_name: string;

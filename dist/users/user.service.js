@@ -39,17 +39,17 @@ let UserService = class UserService {
         const lastId = (await this.userModel.find({}).sort({ _id: -1 }).limit(1));
         const createdUser = new this.userModel(user);
         createdUser.id = lastId[0].id + 1;
-        try {
-            await this.rabbitService.sendMessage({ userId: createdUser.id });
-        }
-        catch (error) {
-            console.log(error);
-        }
         await this.mailerService.sendMail({
             to: user.email,
             subject: 'Congratulations! You are part of the payever team!',
             context: { name: user.last_name },
         });
+        try {
+            await this.rabbitService.sendMessage({ userId: createdUser.id });
+        }
+        catch (error) {
+            console.log("Unable to send Rabbit");
+        }
         return await createdUser.save();
     }
     async getById(id) {
@@ -59,7 +59,7 @@ let UserService = class UserService {
             return response.data.data;
         }
         catch (error) {
-            throw new common_1.NotFoundException(`The user with id ${id} does not exist!`);
+            throw new common_1.BadRequestException(`The user with id ${id} does not exist!`);
         }
     }
     async getAvatar(UserId) {
@@ -68,10 +68,9 @@ let UserService = class UserService {
         if (avatar.startsWith('http')) {
             const response = await axios_2.default.get(avatar, { responseType: 'arraybuffer' });
             const hash = (crypto.createHash('sha256').update(response.data).digest('hex'));
-            const fileName = `${hash}.jpg`;
-            const filePath = path.join(`${process.cwd()}/src/users/avatar-img/${fileName}`);
+            const filePath = path.join(`${process.cwd()}/src/users/avatar-img/${hash}.jpg`);
             fs.writeFileSync(filePath, Buffer.from(response.data), 'binary');
-            user.avatar = fileName;
+            user.avatar = `${hash}.jpg`;
             const updated = await this.userModel.updateOne({ id: UserId }, user).exec();
             return `The image was successfully saved!`;
         }
@@ -83,7 +82,7 @@ let UserService = class UserService {
     async deleteAvatar(UserId) {
         const user = await this.userModel.findOne({ id: UserId });
         if (!user.avatar) {
-            throw new common_1.NotFoundException(`The user with id ${UserId} does not have avatar!`);
+            throw new common_1.BadRequestException(`The user with id ${UserId} does not have avatar!`);
         }
         const filePath = path.resolve(`${process.cwd()}/src/users/avatar-img`, user.avatar);
         await fs.promises.unlink(filePath);

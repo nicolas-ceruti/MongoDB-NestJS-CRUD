@@ -14,7 +14,7 @@ let RabbitMqService = class RabbitMqService {
     async init() {
         this.connection = await amqp.connect(process.env.RABBITMQ_URL);
         this.channel = await this.connection.createChannel();
-        await this.channel.assertExchange('user_created', 'fanout');
+        await this.channel.assertExchange('user-created', 'fanout');
     }
     async sendMessage(userInfo) {
         this.channel.publish('user-created', '', Buffer.from(JSON.stringify(userInfo)));

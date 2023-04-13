@@ -1,10 +1,13 @@
-import { Document } from 'mongoose'
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Contains } from 'class-validator';
 
-export class UserDto extends Document{
+export class UserDto {
     @IsEmail()
     email: string;
+
     first_name: string;
+
     last_name: string;
+
+    @Contains('http')
     avatar: string;
 }

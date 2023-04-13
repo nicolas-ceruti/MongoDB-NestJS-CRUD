@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, Res, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseFilters } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user-dto/user-dto';
-import { Response } from 'express';
+import { Validation } from 'src/validation/validation';
+
 
 @Controller('api')
 export class UsersController {
@@ -12,15 +13,14 @@ export class UsersController {
     public async getUser(@Param('id') id: number): Promise<any> {
         return await this.userService.getById(id);
     }
-
-    
+ 
     @Get('user/:id/avatar')
     public async getAvatar(@Param('id') id: number): Promise<any> {
         return await this.userService.getAvatar(id);
-
     }
 
     @Post('/users')
+    @UseFilters(Validation)
     public async createUser(@Body() userDTO: UserDto): Promise<UserDto> {
         return this.userService.create(userDTO);
     }
@@ -29,7 +29,4 @@ export class UsersController {
     public async deleteAvatar(@Param('id') id: number): Promise<any> {
         return this.userService.deleteAvatar(id);
     }
-
-
-
 }
