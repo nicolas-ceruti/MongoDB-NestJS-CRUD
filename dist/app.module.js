@@ -14,6 +14,7 @@ const app_service_1 = require("./app.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const users_module_1 = require("./users/users.module");
 4;
+const rabbit_mq_service_1 = require("./rabbit-mq/rabbit-mq.service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -23,7 +24,7 @@ AppModule = __decorate([
             users_module_1.UsersModule
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [app_service_1.AppService, rabbit_mq_service_1.RabbitMqService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

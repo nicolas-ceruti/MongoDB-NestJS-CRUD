@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';4
+import { RabbitMqService } from './rabbit-mq/rabbit-mq.service';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { UsersModule } from './users/users.module';4
     UsersModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, RabbitMqService],
 })
 export class AppModule {}
  

@@ -26,15 +26,17 @@ import { Model } from 'mongoose';
 import { UserDto } from './user-dto/user-dto';
 import { MailerService } from '@nestjs-modules/mailer/dist';
 import { HttpService } from '@nestjs/axios';
+import { RabbitMqService } from 'src/rabbit-mq/rabbit-mq.service';
 export declare class UserService {
     private readonly userModel;
     private readonly mailerService;
     private httpService;
-    constructor(userModel: Model<UserDto>, mailerService: MailerService, httpService: HttpService);
+    private readonly rabbitService;
+    constructor(userModel: Model<UserDto>, mailerService: MailerService, httpService: HttpService, rabbitService: RabbitMqService);
     create(user: UserDto): Promise<import("mongoose").Document<unknown, {}, UserDto> & Omit<UserDto & {
         _id: import("mongoose").Types.ObjectId;
     }, never>>;
     getById(id: number): Promise<UserDto>;
-    getAvatar(id: number): Promise<string>;
-    deleteAvatar(id: number): Promise<string>;
+    getAvatar(UserId: number): Promise<string>;
+    deleteAvatar(UserId: number): Promise<string>;
 }

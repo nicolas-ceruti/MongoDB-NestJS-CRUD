@@ -5,7 +5,7 @@ import { UserDto } from './user-dto/user-dto';
 import { MailerService } from '@nestjs-modules/mailer/dist';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-
+import { RabbitMqService } from 'src/rabbit-mq/rabbit-mq.service';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import * as path from 'path';
@@ -19,23 +19,29 @@ export class UserService {
         @InjectModel('Users') private readonly userModel: Model<UserDto>,
         private readonly mailerService: MailerService,
         private httpService: HttpService,
-        // private readonly rabbitService: RabbitService,
+        private readonly rabbitService: RabbitMqService,
     ) { }
 
 
     async create(user: UserDto) {
-
         const userQuery = await this.userModel.findOne({ email: user.email });
+
         if (userQuery) {
             throw new BadRequestException(
                 `The email '${user.email}' has already been registered!`
             );
         }
 
+        const lastId = (await this.userModel.find({}).sort({ _id: -1 }).limit(1));
         const createdUser = new this.userModel(user);
+        createdUser.id = lastId[0].id + 1;
 
-        //Send Rabbit Message
-        // await this.rabbitService.sendMessage({ userId: createdUser.id });
+        try {
+            await this.rabbitService.sendMessage({ userId: createdUser.id });
+            
+        } catch (error) {
+            console.log(error)
+        }
 
         await this.mailerService.sendMail({
             to: user.email,
@@ -60,8 +66,8 @@ export class UserService {
     }
 
 
-    async getAvatar(id: number) {
-        const user = await this.userModel.findOne({ _id: id });
+    async getAvatar(UserId: number) {
+        const user = await this.userModel.findOne({ id: UserId });
         const avatar = user.avatar
 
         if (avatar.startsWith('http')) {
@@ -72,7 +78,7 @@ export class UserService {
             fs.writeFileSync(filePath, Buffer.from(response.data), 'binary');
 
             user.avatar = fileName
-            const updated = await this.userModel.updateOne({ _id: id }, user).exec();
+            const updated = await this.userModel.updateOne({ id: UserId }, user).exec();
 
             return `The image was successfully saved!`
 
@@ -83,18 +89,18 @@ export class UserService {
     }
 
 
-    async deleteAvatar(id: number) {
+    async deleteAvatar(UserId: number) {
 
-        const user = await this.userModel.findOne({ _id: id });
+        const user = await this.userModel.findOne({ id: UserId });
 
         if (!user.avatar) {
-            throw new NotFoundException(`The user with id ${id} does not have avatar!`);
+            throw new NotFoundException(`The user with id ${UserId} does not have avatar!`);
         }
 
         const filePath = path.resolve(`${process.cwd()}/src/users/avatar-img`, user.avatar);
         await fs.promises.unlink(filePath);
         user.avatar = ""
-        const updated = await this.userModel.updateOne({ _id: id }, user).exec();
+        const updated = await this.userModel.updateOne({ id: UserId }, user).exec();
 
         return `The image was successfully deleted!`
 

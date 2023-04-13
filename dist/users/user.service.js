@@ -19,22 +19,32 @@ const mongoose_2 = require("mongoose");
 const dist_1 = require("@nestjs-modules/mailer/dist");
 const axios_1 = require("@nestjs/axios");
 const rxjs_1 = require("rxjs");
+const rabbit_mq_service_1 = require("../rabbit-mq/rabbit-mq.service");
 const fs = require("fs");
 const crypto = require("crypto");
 const path = require("path");
 const axios_2 = require("axios");
 let UserService = class UserService {
-    constructor(userModel, mailerService, httpService) {
+    constructor(userModel, mailerService, httpService, rabbitService) {
         this.userModel = userModel;
         this.mailerService = mailerService;
         this.httpService = httpService;
+        this.rabbitService = rabbitService;
     }
     async create(user) {
         const userQuery = await this.userModel.findOne({ email: user.email });
         if (userQuery) {
             throw new common_1.BadRequestException(`The email '${user.email}' has already been registered!`);
         }
+        const lastId = (await this.userModel.find({}).sort({ _id: -1 }).limit(1));
         const createdUser = new this.userModel(user);
+        createdUser.id = lastId[0].id + 1;
+        try {
+            await this.rabbitService.sendMessage({ userId: createdUser.id });
+        }
+        catch (error) {
+            console.log(error);
+        }
         await this.mailerService.sendMail({
             to: user.email,
             subject: 'Congratulations! You are part of the payever team!',
@@ -52,8 +62,8 @@ let UserService = class UserService {
             throw new common_1.NotFoundException(`The user with id ${id} does not exist!`);
         }
     }
-    async getAvatar(id) {
-        const user = await this.userModel.findOne({ _id: id });
+    async getAvatar(UserId) {
+        const user = await this.userModel.findOne({ id: UserId });
         const avatar = user.avatar;
         if (avatar.startsWith('http')) {
             const response = await axios_2.default.get(avatar, { responseType: 'arraybuffer' });
@@ -62,7 +72,7 @@ let UserService = class UserService {
             const filePath = path.join(`${process.cwd()}/src/users/avatar-img/${fileName}`);
             fs.writeFileSync(filePath, Buffer.from(response.data), 'binary');
             user.avatar = fileName;
-            const updated = await this.userModel.updateOne({ _id: id }, user).exec();
+            const updated = await this.userModel.updateOne({ id: UserId }, user).exec();
             return `The image was successfully saved!`;
         }
         else if (!user.avatar) {
@@ -70,15 +80,15 @@ let UserService = class UserService {
         }
         throw new common_1.BadRequestException(`The image has already been saved in the system!`);
     }
-    async deleteAvatar(id) {
-        const user = await this.userModel.findOne({ _id: id });
+    async deleteAvatar(UserId) {
+        const user = await this.userModel.findOne({ id: UserId });
         if (!user.avatar) {
-            throw new common_1.NotFoundException(`The user with id ${id} does not have avatar!`);
+            throw new common_1.NotFoundException(`The user with id ${UserId} does not have avatar!`);
         }
         const filePath = path.resolve(`${process.cwd()}/src/users/avatar-img`, user.avatar);
         await fs.promises.unlink(filePath);
         user.avatar = "";
-        const updated = await this.userModel.updateOne({ _id: id }, user).exec();
+        const updated = await this.userModel.updateOne({ id: UserId }, user).exec();
         return `The image was successfully deleted!`;
     }
 };
@@ -87,7 +97,8 @@ UserService = __decorate([
     __param(0, (0, mongoose_1.InjectModel)('Users')),
     __metadata("design:paramtypes", [mongoose_2.Model,
         dist_1.MailerService,
-        axios_1.HttpService])
+        axios_1.HttpService,
+        rabbit_mq_service_1.RabbitMqService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

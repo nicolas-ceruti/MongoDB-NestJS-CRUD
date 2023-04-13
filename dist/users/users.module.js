@@ -15,8 +15,10 @@ const user_schema_1 = require("./schema/user.schema");
 const mongoose_1 = require("@nestjs/mongoose");
 const mailer_1 = require("@nestjs-modules/mailer");
 const axios_1 = require("@nestjs/axios");
+const rabbit_mq_service_1 = require("../rabbit-mq/rabbit-mq.service");
 const user = process.env.MAILER_USER;
 const pass = process.env.MAILER_PASSWORD;
+const host = process.env.MAILER_HOST;
 let UsersModule = class UsersModule {
 };
 UsersModule = __decorate([
@@ -25,17 +27,17 @@ UsersModule = __decorate([
             mongoose_1.MongooseModule.forFeature([{ name: 'Users', schema: user_schema_1.UserSchema }]),
             mailer_1.MailerModule.forRoot({
                 transport: {
-                    host: 'smtp.gmail.com',
+                    host: host,
                     auth: {
                         user: user,
                         pass: pass,
                     }
                 }
             }),
-            axios_1.HttpModule
+            axios_1.HttpModule,
         ],
         controllers: [users_controller_1.UsersController],
-        providers: [user_service_1.UserService]
+        providers: [user_service_1.UserService, rabbit_mq_service_1.RabbitMqService]
     })
 ], UsersModule);
 exports.UsersModule = UsersModule;
