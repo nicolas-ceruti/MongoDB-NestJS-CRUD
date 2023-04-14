@@ -1,14 +1,19 @@
+require('dotenv/config');
 import { Test, TestingModule } from '@nestjs/testing';
 import axios from 'axios';
 import { UserService } from './user.service';
 import { UsersController } from './users.controller';
 
+import { MongooseModule } from '@nestjs/mongoose';
+
 describe('UsersController', () => {
   let userController: UsersController;
-  let userService: UserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports:[
+        MongooseModule.forRoot(`${process.env.MONGODB_ATLAS_URI}`),
+      ],
       controllers: [UsersController],
       providers: [
         {
@@ -37,5 +42,4 @@ describe('UsersController', () => {
       expect(result.status).toEqual(200)
     })
   });
-
 });
