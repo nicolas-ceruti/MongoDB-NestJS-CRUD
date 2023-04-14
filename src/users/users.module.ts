@@ -8,25 +8,25 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HttpModule } from '@nestjs/axios';
 import { RabbitMqService } from 'src/rabbit-mq/rabbit-mq.service';
 
-const user =process.env.MAILER_USER
-const pass = process.env.MAILER_PASSWORD
-const host = process.env.MAILER_HOST
+const user = process.env.MAILER_USER;
+const pass = process.env.MAILER_PASSWORD;
+const host = process.env.MAILER_HOST;
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{name : 'Users', schema: UserSchema}]),
+    MongooseModule.forFeature([{ name: 'Users', schema: UserSchema }]),
     MailerModule.forRoot({
-      transport:{
+      transport: {
         host: host,
         auth: {
           user: user,
           pass: pass,
-        }
-      }
+        },
+      },
     }),
     HttpModule,
   ],
   controllers: [UsersController],
-  providers: [UserService, RabbitMqService]
+  providers: [UserService, RabbitMqService],
 })
 export class UsersModule {}

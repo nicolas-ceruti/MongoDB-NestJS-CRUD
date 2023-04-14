@@ -5,14 +5,14 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
 
   try {
     const rabbitMqService = app.get(RabbitMqService);
     await rabbitMqService.init();
   } catch (ex) {
-    console.log("Unable to connect to rabbitMQ")
-  }   
+    console.log('Unable to connect to rabbitMQ');
+  }
 
   await app.listen(3000);
 }

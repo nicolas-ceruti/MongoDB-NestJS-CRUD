@@ -31,13 +31,13 @@ UsersModule = __decorate([
                     auth: {
                         user: user,
                         pass: pass,
-                    }
-                }
+                    },
+                },
             }),
             axios_1.HttpModule,
         ],
         controllers: [users_controller_1.UsersController],
-        providers: [user_service_1.UserService, rabbit_mq_service_1.RabbitMqService]
+        providers: [user_service_1.UserService, rabbit_mq_service_1.RabbitMqService],
     })
 ], UsersModule);
 exports.UsersModule = UsersModule;

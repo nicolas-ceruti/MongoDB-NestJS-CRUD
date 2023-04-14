@@ -12,7 +12,7 @@ async function bootstrap() {
         await rabbitMqService.init();
     }
     catch (ex) {
-        console.log("Unable to connect to rabbitMQ");
+        console.log('Unable to connect to rabbitMQ');
     }
     await app.listen(3000);
 }

@@ -36,7 +36,7 @@ let UserService = class UserService {
         if (userQuery) {
             throw new common_1.BadRequestException(`The email '${user.email}' has already been registered!`);
         }
-        const lastId = (await this.userModel.find({}).sort({ _id: -1 }).limit(1));
+        const lastId = await this.userModel.find({}).sort({ _id: -1 }).limit(1);
         const createdUser = new this.userModel(user);
         createdUser.id = lastId[0].id + 1;
         await this.mailerService.sendMail({
@@ -48,7 +48,7 @@ let UserService = class UserService {
             await this.rabbitService.sendMessage({ userId: createdUser.id });
         }
         catch (error) {
-            console.log("Unable to send Rabbit");
+            console.log('Unable to send Rabbit');
         }
         return await createdUser.save();
     }
@@ -65,19 +65,22 @@ let UserService = class UserService {
     async getAvatar(UserId) {
         const user = await this.userModel.findOne({ id: UserId });
         const avatar = user.avatar;
-        if (avatar.startsWith('http')) {
+        if (!user.avatar) {
+            throw new common_1.BadRequestException(`The user does not have avatar!`);
+        }
+        else if (avatar.startsWith('http')) {
             const response = await axios_2.default.get(avatar, { responseType: 'arraybuffer' });
-            const hash = (crypto.createHash('sha256').update(response.data).digest('hex'));
+            const hash = user.id +
+                crypto.createHash('sha256').update(response.data).digest('base64');
             const filePath = path.join(`${process.cwd()}/src/users/avatar-img/${hash}.jpg`);
             fs.writeFileSync(filePath, Buffer.from(response.data), 'binary');
             user.avatar = `${hash}.jpg`;
-            const updated = await this.userModel.updateOne({ id: UserId }, user).exec();
-            return `The image was successfully saved!`;
+            await this.userModel
+                .updateOne({ id: UserId }, user)
+                .exec();
+            return `${user.avatar}`;
         }
-        else if (!user.avatar) {
-            throw new common_1.BadRequestException(`The user does not have avatar!`);
-        }
-        throw new common_1.BadRequestException(`The image has already been saved in the system!`);
+        return `${user.avatar}`;
     }
     async deleteAvatar(UserId) {
         const user = await this.userModel.findOne({ id: UserId });
@@ -86,8 +89,8 @@ let UserService = class UserService {
         }
         const filePath = path.resolve(`${process.cwd()}/src/users/avatar-img`, user.avatar);
         await fs.promises.unlink(filePath);
-        user.avatar = "";
-        const updated = await this.userModel.updateOne({ id: UserId }, user).exec();
+        user.avatar = '';
+        await this.userModel.updateOne({ id: UserId }, user).exec();
         return `The image was successfully deleted!`;
     }
 };
