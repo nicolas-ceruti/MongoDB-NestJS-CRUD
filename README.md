@@ -1,73 +1,51 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# BACK-END ASSIGNMENT | Nicolaas Ceruti
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Getting Started
+The following instructions will help you get a copy of this project up and running on your local machine. You will be able to test it as Production or Development mode.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Requirements
+You need to install the following technologies and run them locally:
 
-## Description
+ - https://nodejs.org/en/download/ - Node.js
+ - https://www.mongodb.com/try/download/community - MongoDB
+ - https://www.rabbitmq.com/download.html - RabbitMQ
+ 
+* For MongodB you can use its Atlas service so you don't have to install it on your machine. Atlas Service: https://www.mongodb.com/atlas/database.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Download and Installation
+ - Downloading the .zip file, you already have all the necessary files in the root folder so you can move along.
 
-## Installation
+ - Open the '.env' file and follow the instructions in it.
 
-```bash
-$ yarn install
-```
+ - After setting up your environment variables, run ```npm install``` to install all dependencies.
+ 
+ - ```npm runx start:dev ``` will start up the application using a nest.js script, running on port 3000. 3
+ 
+ * After this, you can starting sending request or running tests.
+ 
+## API Resources
+You can use an http client to send requests to this application, such as Insomnia or Postman.
 
-## Running the app
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
+### Endpoints
+1. POST /api/users <br/>
+On the request store the user entry in db. After the creation, send an email and rabbit event. Both can be dummy sending (no consumer needed).
+2. GET /api/user/{userId}  <br/>
+Retrieves data from https://reqres.in/api/users/{userId} and returns a user in JSON representation.
+3. GET /api/user/{userId}/avatar  <br/>
+Retrieves image by 'avatar' URL.
+On the first request it should save the image as a plain file, stored as a mongodb entry with userId and hash. Return its base64-encoded representation.
+On following requests should return the previously saved file in base64-encoded. representation (retrieve from db).
+4. DELETE /api/user/{userId}/avatar  <br/>
+Removes the file from the FileSystem storage.
+Removes the stored entry from db.
 
 ## Test
+These test files have been designed to ensure that the code and its functionalities are working effectively and reliably.
 
-```bash
-# unit tests
-$ yarn run test
+* The Unit Test files for each code file can be found right next to it, in the same directory
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+To run the tests, just run:
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+npm run test
+```
+PS.: To be able to join the project on time, I couldn't write many tests, but I assure you that everything is working according to the project documents
