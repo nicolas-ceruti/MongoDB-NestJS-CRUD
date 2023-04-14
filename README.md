@@ -19,7 +19,7 @@ You need to install the following technologies and run them locally:
 
  - After setting up your environment variables, run ```npm install``` to install all dependencies.
  
- - ```npm runx start:dev ``` will start up the application using a nest.js script, running on port 3000. 3
+ - ```npm runx start:dev ``` will start up the application using a nest.js script, running on port 3000. 
  
  * After this, you can starting sending request or running tests.
  
@@ -40,6 +40,8 @@ Removes the file from the FileSystem storage.
 Removes the stored entry from db.
 
 ## Test
+PS.: To be able to join the project on time, I couldn't write many tests, but I assure you that everything is working according to the project documents.
+
 These test files have been designed to ensure that the code and its functionalities are working effectively and reliably.
 
 * The Unit Test files for each code file can be found right next to it, in the same directory
@@ -48,4 +50,4 @@ To run the tests, just run:
 ```
 npm run test
 ```
-PS.: To be able to join the project on time, I couldn't write many tests, but I assure you that everything is working according to the project documents
+
