@@ -50,4 +50,3 @@ To run the tests, just run:
 ```
 npm run test
 ```
-
