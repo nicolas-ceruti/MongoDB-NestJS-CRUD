@@ -1,7 +1,7 @@
-# BACK-END ASSIGNMENT | Nicolaas Ceruti
+# BACK-END ASSIGNMENT | Nicolas Ceruti
 
 ## Getting Started
-The following instructions will help you get a copy of this project up and running on your local machine. You will be able to test it as Production or Development mode.
+The following instructions will help you get a copy of this project up and running on your local machine. 
 
 ## Requirements
 You need to install the following technologies and run them locally:
