@@ -20,6 +20,8 @@ export class UserService {
     private readonly rabbitService: RabbitMqService,
   ) {}
 
+
+
   async create(user: UserDto) {
     const userQuery = await this.userModel.findOne({ email: user.email });
 
@@ -31,12 +33,13 @@ export class UserService {
 
     const lastId = await this.userModel.find({}).sort({ _id: -1 }).limit(1);
     const createdUser = new this.userModel(user);
-    createdUser.id = lastId[0].id + 1;
+    console.log(lastId)
+    createdUser.id = lastId.length != 0 ? lastId[0].id + 1 : 1;
 
     await this.mailerService.sendMail({
       to: user.email,
       subject: 'Congratulations! You are part of the payever team!',
-      context: { name: user.last_name },
+      context: { name: user.lastName },
     });
 
     try {
@@ -48,6 +51,8 @@ export class UserService {
     return await createdUser.save();
   }
 
+
+
   async getById(id: number): Promise<UserDto> {
     try {
       const require = this.httpService.get(`https://reqres.in/api/users/${id}`);
@@ -57,6 +62,8 @@ export class UserService {
       throw new BadRequestException(`The user with id ${id} does not exist!`);
     }
   }
+
+
 
   async getAvatar(UserId: number) {
     const user = await this.userModel.findOne({ id: UserId });
@@ -82,6 +89,8 @@ export class UserService {
     }
     return `${user.avatar}`;
   }
+
+
 
   async deleteAvatar(UserId: number) {
     const user = await this.userModel.findOne({ id: UserId });

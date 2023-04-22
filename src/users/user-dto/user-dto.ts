@@ -1,12 +1,18 @@
-import { IsEmail, Contains } from 'class-validator';
+import { IsEmail, Contains, IsNotEmpty, MaxLength } from 'class-validator';
 
 export class UserDto {
+
+  @IsNotEmpty()
   @IsEmail()
   email: string;
 
-  first_name: string;
+  @IsNotEmpty()
+  @MaxLength(50)
+  firstName: string;
 
-  last_name: string;
+  @IsNotEmpty()
+  @MaxLength(50)
+  lastName: string;
 
   @Contains('http')
   avatar: string;

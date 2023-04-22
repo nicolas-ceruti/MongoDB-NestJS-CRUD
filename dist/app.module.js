@@ -9,8 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 require('dotenv/config');
 const common_1 = require("@nestjs/common");
-const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const users_module_1 = require("./users/users.module");
 const rabbit_mq_service_1 = require("./rabbit-mq/rabbit-mq.service");
@@ -22,8 +20,8 @@ AppModule = __decorate([
             mongoose_1.MongooseModule.forRoot(`${process.env.MONGODB_ATLAS_URI}`),
             users_module_1.UsersModule,
         ],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService, rabbit_mq_service_1.RabbitMqService],
+        controllers: [],
+        providers: [rabbit_mq_service_1.RabbitMqService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

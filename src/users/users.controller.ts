@@ -16,12 +16,12 @@ export class UsersController {
   constructor(private userService: UserService) {}
 
   @Get('user/:id')
-  public async getUser(@Param('id') id: number): Promise<any> {
+  public async getUser(@Param('id') id: number): Promise<UserDto> {
     return await this.userService.getById(id);
   }
 
   @Get('user/:id/avatar')
-  public async getAvatar(@Param('id') id: number): Promise<any> {
+  public async getAvatar(@Param('id') id: number): Promise<string> {
     return await this.userService.getAvatar(id);
   }
 
@@ -32,7 +32,7 @@ export class UsersController {
   }
 
   @Delete('user/:id/avatar')
-  public async deleteAvatar(@Param('id') id: number): Promise<any> {
+  public async deleteAvatar(@Param('id') id: number): Promise<string> {
     return this.userService.deleteAvatar(id);
   }
 }

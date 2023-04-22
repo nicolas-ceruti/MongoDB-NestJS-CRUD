@@ -38,11 +38,12 @@ let UserService = class UserService {
         }
         const lastId = await this.userModel.find({}).sort({ _id: -1 }).limit(1);
         const createdUser = new this.userModel(user);
-        createdUser.id = lastId[0].id + 1;
+        console.log(lastId);
+        createdUser.id = lastId.length != 0 ? lastId[0].id + 1 : 1;
         await this.mailerService.sendMail({
             to: user.email,
             subject: 'Congratulations! You are part of the payever team!',
-            context: { name: user.last_name },
+            context: { name: user.lastName },
         });
         try {
             await this.rabbitService.sendMessage({ userId: createdUser.id });

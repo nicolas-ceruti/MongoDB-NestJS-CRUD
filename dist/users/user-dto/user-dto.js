@@ -14,9 +14,20 @@ const class_validator_1 = require("class-validator");
 class UserDto {
 }
 __decorate([
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], UserDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(50),
+    __metadata("design:type", String)
+], UserDto.prototype, "firstName", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(50),
+    __metadata("design:type", String)
+], UserDto.prototype, "lastName", void 0);
 __decorate([
     (0, class_validator_1.Contains)('http'),
     __metadata("design:type", String)
