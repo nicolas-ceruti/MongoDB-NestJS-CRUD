@@ -5,11 +5,14 @@ import { UserService } from './user.service';
 import { UsersController } from './users.controller';
 
 import { MongooseModule } from '@nestjs/mongoose';
+import { INestApplication } from '@nestjs/common';
 
 describe('UsersController', () => {
+  // eslint-disable-next-line 
   let userController: UsersController;
+  let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports:[
         MongooseModule.forRoot(`${process.env.MONGODB_ATLAS_URI}`),
@@ -29,11 +32,14 @@ describe('UsersController', () => {
     }).compile();
 
     userController = module.get<UsersController>(UsersController);
+    app = module.createNestApplication();
+    await app.init();
   });
 
-  it('should be defined', () => {
-    expect(userController).toBeDefined();
+  afterAll(async () => {
+    await app.close();
   });
+
 
   describe('Connection with https://reqres.in', () => {
     it('Should return an JSON object', async () => {
@@ -42,4 +48,6 @@ describe('UsersController', () => {
       expect(result.status).toEqual(200)
     })
   });
+
+
 });

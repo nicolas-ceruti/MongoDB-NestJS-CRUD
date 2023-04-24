@@ -36,9 +36,8 @@ let UserService = class UserService {
         if (userQuery) {
             throw new common_1.BadRequestException(`The email '${user.email}' has already been registered!`);
         }
-        const lastId = await this.userModel.find({}).sort({ _id: -1 }).limit(1);
         const createdUser = new this.userModel(user);
-        console.log(lastId);
+        const lastId = await this.userModel.find({}).sort({ _id: -1 }).limit(1);
         createdUser.id = lastId.length != 0 ? lastId[0].id + 1 : 1;
         await this.mailerService.sendMail({
             to: user.email,
@@ -71,14 +70,12 @@ let UserService = class UserService {
         }
         else if (avatar.startsWith('http')) {
             const response = await axios_2.default.get(avatar, { responseType: 'arraybuffer' });
-            const hash = user.id +
-                crypto.createHash('sha256').update(response.data).digest('base64');
-            const filePath = path.join(`${process.cwd()}/src/users/avatar-img/${hash}.jpg`);
+            const hash = crypto.createHash('sha256').update(response.data).digest('base64') +
+                user.id;
+            const filePath = path.join(`${process.cwd()}/src/uploads/avatar-img/${hash}.jpg`);
             fs.writeFileSync(filePath, Buffer.from(response.data), 'binary');
             user.avatar = `${hash}.jpg`;
-            await this.userModel
-                .updateOne({ id: UserId }, user)
-                .exec();
+            await this.userModel.updateOne({ id: UserId }, user).exec();
             return `${user.avatar}`;
         }
         return `${user.avatar}`;
@@ -88,7 +85,7 @@ let UserService = class UserService {
         if (!user.avatar) {
             throw new common_1.BadRequestException(`The user with id ${UserId} does not have avatar!`);
         }
-        const filePath = path.resolve(`${process.cwd()}/src/users/avatar-img`, user.avatar);
+        const filePath = path.resolve(`${process.cwd()}/src/uploads/avatar-img`, user.avatar);
         await fs.promises.unlink(filePath);
         user.avatar = '';
         await this.userModel.updateOne({ id: UserId }, user).exec();

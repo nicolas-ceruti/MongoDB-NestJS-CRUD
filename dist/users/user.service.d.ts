@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Model } from 'mongoose';
-import { UserDto } from './user-dto/user-dto';
+import { UserDto } from './dto/user-dto';
 import { MailerService } from '@nestjs-modules/mailer/dist';
 import { HttpService } from '@nestjs/axios';
 import { RabbitMqService } from '../rabbit-mq/rabbit-mq.service';

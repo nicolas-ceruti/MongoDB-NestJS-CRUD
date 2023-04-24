@@ -7,7 +7,7 @@ import { RabbitMqService } from './rabbit-mq/rabbit-mq.service';
 @Module({
   imports: [
     MongooseModule.forRoot(`${process.env.MONGODB_ATLAS_URI}`),
-    UsersModule,  // import outros modulos
+    UsersModule, 
   ],
   controllers: [],
   providers: [ RabbitMqService],

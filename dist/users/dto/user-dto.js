@@ -16,6 +16,7 @@ class UserDto {
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UserDto.prototype, "email", void 0);
 __decorate([
@@ -26,10 +27,12 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MaxLength)(50),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UserDto.prototype, "lastName", void 0);
 __decorate([
     (0, class_validator_1.Contains)('http'),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UserDto.prototype, "avatar", void 0);
 exports.UserDto = UserDto;

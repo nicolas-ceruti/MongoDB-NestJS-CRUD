@@ -6,7 +6,7 @@ import { UserSchema } from './schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HttpModule } from '@nestjs/axios';
-import { RabbitMqService } from 'src/rabbit-mq/rabbit-mq.service';
+import { RabbitMqService } from '../rabbit-mq/rabbit-mq.service';
 
 const user = process.env.MAILER_USER;
 const pass = process.env.MAILER_PASSWORD;
