@@ -14,7 +14,7 @@ async function bootstrap() {
     catch (ex) {
         console.log('Unable to connect to rabbitMQ');
     }
-    await app.listen(3008);
+    await app.listen(3000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

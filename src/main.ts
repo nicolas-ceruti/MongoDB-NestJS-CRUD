@@ -14,6 +14,6 @@ async function bootstrap() {
     console.log('Unable to connect to rabbitMQ');
   }
 
-  await app.listen(3008);
+  await app.listen(3000);
 }
 bootstrap();
