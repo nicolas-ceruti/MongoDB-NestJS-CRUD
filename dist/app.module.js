@@ -11,7 +11,7 @@ require('dotenv/config');
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const users_module_1 = require("./users/users.module");
-const rabbit_mq_service_1 = require("./rabbit-mq/rabbit-mq.service");
+const rabbit_mq_service_1 = require("./services/rabbit-mq/rabbit-mq.service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([

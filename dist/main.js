@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
-const rabbit_mq_service_1 = require("./rabbit-mq/rabbit-mq.service");
+const rabbit_mq_service_1 = require("./services/rabbit-mq/rabbit-mq.service");
 const common_1 = require("@nestjs/common");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);

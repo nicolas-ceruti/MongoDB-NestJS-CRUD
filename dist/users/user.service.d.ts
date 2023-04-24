@@ -26,7 +26,7 @@ import { Model } from 'mongoose';
 import { UserDto } from './dto/user-dto';
 import { MailerService } from '@nestjs-modules/mailer/dist';
 import { HttpService } from '@nestjs/axios';
-import { RabbitMqService } from '../rabbit-mq/rabbit-mq.service';
+import { RabbitMqService } from '../services/rabbit-mq/rabbit-mq.service';
 export declare class UserService {
     private readonly userModel;
     private readonly mailerService;

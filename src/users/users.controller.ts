@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user-dto';
-import { Validation } from '..//validation/validation';
+import { Validation } from '../services/validation/validation';
 
 @Controller('api')
 export class UsersController {

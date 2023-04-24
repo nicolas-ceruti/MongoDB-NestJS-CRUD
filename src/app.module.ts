@@ -2,7 +2,7 @@ require('dotenv/config');
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
-import { RabbitMqService } from './rabbit-mq/rabbit-mq.service';
+import { RabbitMqService } from './services/rabbit-mq/rabbit-mq.service';
 
 @Module({
   imports: [

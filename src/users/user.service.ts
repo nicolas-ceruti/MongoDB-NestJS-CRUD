@@ -5,7 +5,7 @@ import { UserDto } from './dto/user-dto';
 import { MailerService } from '@nestjs-modules/mailer/dist';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import { RabbitMqService } from '../rabbit-mq/rabbit-mq.service';
+import { RabbitMqService } from '../services/rabbit-mq/rabbit-mq.service';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import * as path from 'path';

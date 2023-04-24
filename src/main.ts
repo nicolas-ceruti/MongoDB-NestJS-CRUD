@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { RabbitMqService } from './rabbit-mq/rabbit-mq.service';
+import { RabbitMqService } from './services/rabbit-mq/rabbit-mq.service';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
