@@ -1,4 +1,4 @@
-# BACK-END ASSIGNMENT | Nicolas Ceruti
+# NestJS API | Nicolas Ceruti
 
 ## Getting Started
 The following instructions will help you get a copy of this project up and running on your local machine. 
@@ -40,7 +40,6 @@ Removes the file from the FileSystem storage.
 Removes the stored entry from db.
 
 ## Test
-PS.: To be able to join the project on time, I couldn't write many tests, but I assure you that everything is working according to the project documents.
 
 These test files have been designed to ensure that the code and its functionalities are working effectively and reliably.
 
